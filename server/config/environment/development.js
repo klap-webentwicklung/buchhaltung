@@ -6,7 +6,7 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/angularfullstack-dev'
+    uri: 'mongodb://localhost/buchhaltung'
   },
 
   // Seed database on startup

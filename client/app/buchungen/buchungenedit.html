@@ -1,0 +1,9 @@
+<h1>Buchungen Edit</h1>
+
+<form name="editForm" ng-submit="$ctrl.saveStatementItem()">
+	<input type="text" name="provider" placeholder="Provider" ng-model="$ctrl.newStatementitem.provider">
+	<input type="date" name="date" placeholder="Datum" ng-model="$ctrl.newStatementitem.date">
+	<input type="text" name="infotext" placeholder="Info Text" ng-model="$ctrl.newStatementitem.infotext">
+	<input type="number" name="amount" placeholder="Betrag" ng-model="$ctrl.newStatementitem.amount">
+	<input type="submit">
+</form>

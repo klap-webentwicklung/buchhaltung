@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFullstackApp.admin',
+angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFullstackApp.admin', 'ui.grid',
     'angularFullstackApp.constants', 'ngCookies', 'ngResource', 'ngSanitize', 'ui.router',
     'ui.bootstrap', 'validation.match'
   ])
