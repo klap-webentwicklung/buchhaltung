@@ -2,8 +2,13 @@
 
 <form name="editForm" ng-submit="$ctrl.saveStatementItem()">
 	<input type="text" name="provider" placeholder="Provider" ng-model="$ctrl.newStatementitem.provider">
-	<input type="date" name="date" placeholder="Datum" ng-model="$ctrl.newStatementitem.date">
+	<input type="date" name="date" placeholder="Datum" ng-model="$ctrl.newStatementitem.date" ng-if="!$ctrl.editing">
 	<input type="text" name="infotext" placeholder="Info Text" ng-model="$ctrl.newStatementitem.infotext">
 	<input type="number" name="amount" placeholder="Betrag" ng-model="$ctrl.newStatementitem.amount">
-	<input type="submit">
+	                    <select name="type" ng-model="$ctrl.newStatementitem.type" class="form-control" ng-init="$ctrl.newStatementitem.type">
+                        <option value="">Buchungs Typ wählen</option>
+                        <option ng-repeat="option in $ctrl.typeOptions" value="{{option}}">{{option}}</option>
+                    </select>
+	<!-- <input type="submit"> -->
+	<button type="submit">Save</button>
 </form>

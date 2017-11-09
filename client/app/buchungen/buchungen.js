@@ -8,7 +8,7 @@ angular.module('angularFullstackApp')
         template: '<buchungen></buchungen>'
       })
       .state('buchungenedit', {
-        url: '/buchungenedit',
+        url: '/buchungenedit/{statementItemId}',
         template: '<buchungenedit></buchungenedit>'
       });
   });

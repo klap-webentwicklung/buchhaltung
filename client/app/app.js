@@ -8,4 +8,19 @@ angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFulls
     $urlRouterProvider.otherwise('/');
 
     $locationProvider.html5Mode(true);
+  })
+
+    // make statement data available
+  .factory('StatementService', function($http) {
+    return {
+      getStatements: function() {
+        var promise = $http.get('/api/statements')
+          .then(response => {
+          	console.log('got the Statements');
+            return response.data;
+          });
+        return promise;
+      }
+
+    };
   });
