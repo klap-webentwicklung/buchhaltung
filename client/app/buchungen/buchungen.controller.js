@@ -2,10 +2,11 @@
 (function() {
 
     class BuchungenComponent {
-      constructor(StatementService, uiGridConstants, $location) {
+      constructor(StatementService, uiGridConstants, $location, $filter) {
         this.StatementService = StatementService;
         this.uiGridConstants = uiGridConstants;
         this.$location = $location;
+        this.$filter = $filter;
 
         // Date conversion
         // ***********************
@@ -36,7 +37,7 @@
               {
                 name: 'Datum',
                 field: 'date',
-                width: 100,
+                width: 120,
                 // exporterSuppressExport: true
               }, {
                 name: 'Buchungs-Text',
@@ -53,15 +54,23 @@
                 name: 'Betrag',
                 field: 'amount',
                 width: 100
-              }, {
-              	field: 'type'
-              }, {
+              }, 
+              /* {
+                field: 'type', editableCellTemplate: 'ui-grid/dropdownEditor', cellFilter: 'mapType', editDropdownValueLabel: 'type', editDropdownOptionsArray: [
+                  { id: 1, type: 'hardware' },
+                  { id: 2, type: 'lohn' }
+                ] 
+              } */
+              {
+                field: 'type',
+              width: 200
+            }, {
               	field: 'processed'
               }
-              
             ]
 
-          }; // End UI Grid Devinition
+
+          }; // End UI Grid Options
         } // End Constructor
 
         $onInit() {
@@ -71,7 +80,7 @@
           this.StatementService.getStatements().then(function(data) {
             // obj for ui-grid
             self.gridOptions.data = data;
-            console.log('Gid Data :', self.gridOptions.data);
+            console.log('Grid Data :', self.gridOptions.data);
           });
         } // end $onInit
 
