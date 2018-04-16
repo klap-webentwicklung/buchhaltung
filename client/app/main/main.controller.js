@@ -4,12 +4,43 @@
 
   class MainController {
 
-    constructor($http) {
+    constructor($http,StatementService, uiGridConstants, $location, $filter) {
       this.$http = $http;
       this.awesomeThings = [];
-    }
+      this.StatementService = StatementService;
+      this.uiGridConstants = uiGridConstants;
+      this.$location = $location;
+      this.$filter = $filter;
+
+      this.gridOptions = {
+
+        columnDefs: [
+          
+          {
+            field: 'monat'
+          },
+          {
+            field: 'einkommen'
+          },
+          {
+            field: 'material'
+          }
+          
+        ]
+
+
+      }; // End UI Grid Options
+
+    } // end constructor
 
     $onInit() {
+
+      this.gridOptions.data = [{
+        monat: "Januar",
+        einkommen: 200,
+        material: 40
+      }];
+
       this.$http.get('/api/things')
         .then(response => {
           this.awesomeThings = response.data;
