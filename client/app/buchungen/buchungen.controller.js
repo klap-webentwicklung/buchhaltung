@@ -39,7 +39,14 @@
                 field: 'date',
                 width: 120,
                 // exporterSuppressExport: true
-              }, {
+              },
+              {
+                field: 'jahr',
+              },
+              {
+                field: 'monat',
+              },
+              {
                 name: 'Buchungs-Text',
                 field: 'infotext',
                 width: 600

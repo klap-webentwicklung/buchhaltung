@@ -10,7 +10,9 @@ var StatementSchema = new mongoose.Schema({
   type: String,
   costType: String,
   incomeType: String,
-  processed: Boolean
+  processed: Boolean,
+  monat: String,
+  jahr: String
 
 });
 

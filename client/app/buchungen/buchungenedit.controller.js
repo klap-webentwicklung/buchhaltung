@@ -2,14 +2,16 @@
 (function () {
 
   class BuchungenEditComponent {
-    constructor($http, $state) {
+    constructor($http, $state, $filter) {
       this.$http = $http;
       this.$state = $state;
+      this.$filter = $filter;
       this.newStatementitem = {};
       this.costTypeOptions = [
         'Lohn',
-        'Material 1',
-        'Material 2',
+        'Material',
+        'Hardware',
+        'Software',
         'Miete Putzen EWZ',
         'Büro und Telefon',
         'Transport',
@@ -60,12 +62,13 @@
     }
 
     addStatementItem() {
-      this.$http.post('/api/statements', {
+
+        this.$http.post('/api/statements', {
         provider: this.newStatementitem.provider,
         date: this.newStatementitem.date,
+        monat: this.newStatementitem.monat,
         infotext: this.newStatementitem.infotext,
         amount: this.newStatementitem.amount,
-        // type: this.newStatementitem.type,
         costType: this.newStatementitem.costType,
         incomeType: this.newStatementitem.incomeType,
         processed: this.newStatementitem.processed
@@ -75,10 +78,14 @@
         console.log('Processed triggered');
       }
 
-      this.$state.reload();
+      // this.$state.reload();
       
     }
     editStatementItem() {
+
+      this.newStatementitem.monat = this.$filter('date')(this.newStatementitem.date, "MMMM");
+      this.newStatementitem.jahr = this.$filter('date')(this.newStatementitem.date, "yyyy");
+
       if (this.newStatementitem.costType !== undefined || this.newStatementitem.incomeType !== undefined) {
         console.log('this.newStatementitem.costType:', this.newStatementitem.costType);
         this.newStatementitem.processed = true;
@@ -87,6 +94,8 @@
         provider: 'ABS AG',
         //provider: this.newStatementitem.provider,
         date: this.newStatementitem.date,
+        monat: this.newStatementitem.monat,
+        jahr: this.newStatementitem.jahr,
         infotext: this.newStatementitem.infotext,
         amount: this.newStatementitem.amount,
         // type: this.newStatementitem.type,
