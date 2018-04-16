@@ -61,10 +61,17 @@
                   { id: 2, type: 'lohn' }
                 ] 
               } */
-              {
+              /* {
                 field: 'type',
               width: 200
-            }, {
+            },  */             {
+                field: 'costType',
+                width: 200
+              },
+              {
+                field: 'incomeType',
+                width: 200
+              }, {
               	field: 'processed'
               }
             ]

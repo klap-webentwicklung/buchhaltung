@@ -8,6 +8,8 @@ var StatementSchema = new mongoose.Schema({
   infotext: String,
   amount: Number,
   type: String,
+  costType: String,
+  incomeType: String,
   processed: Boolean
 
 });

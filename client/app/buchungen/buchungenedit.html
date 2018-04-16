@@ -3,13 +3,21 @@
 <section class="row">
 	<article class="col-md-8 col-md-offset-2">
 <form name="editForm" ng-submit="$ctrl.saveStatementItem()">
-	<input type="text" name="provider" class="form-control" ng-model="$ctrl.newStatementitem.provider">
+	<!-- <input type="text" name="provider" class="form-control" ng-model="$ctrl.newStatementitem.provider"> -->
 	<input type="date" name="date" class="form-control" ng-model="$ctrl.newStatementitem.date" ng-if="!$ctrl.editing">
 	<input type="text" name="infotext" class="form-control" ng-model="$ctrl.newStatementitem.infotext">
 	<input type="number" step=".01" name="amount" class="form-control" placeholder="Betrag" ng-model="$ctrl.newStatementitem.amount">
-	<select name="type" ng-model="$ctrl.newStatementitem.type" class="form-control" ng-init="$ctrl.newStatementitem.type">
-                        <option value="">Buchungs Typ wählen</option>
+	<!-- <select name="type" ng-model="$ctrl.newStatementitem.type" class="form-control" ng-init="$ctrl.newStatementitem.type">
+                        <option value="">Aufwand Art</option>
                         <option ng-repeat="option in $ctrl.typeOptions" value="{{option}}">{{option}}</option>
+                    </select> -->
+	<select name="cost-type" ng-model="$ctrl.newStatementitem.costType" class="form-control" ng-init="$ctrl.newStatementitem.costType">
+                        <option value="">Aufwand Art</option>
+                        <option ng-repeat="option in $ctrl.costTypeOptions" value="{{option}}">{{option}}</option>
+                    </select>
+	<select name="income-type" ng-model="$ctrl.newStatementitem.incomeType" class="form-control" ng-init="$ctrl.newStatementitem.incomeType">
+                        <option value="">Ertrags-Art</option>
+                        <option ng-repeat="option in $ctrl.incomeTypeOptions" value="{{option}}">{{option}}</option>
                     </select>
 	<!-- <input type="submit"> -->
 	<button type="submit" class="btn btn-success">Save</button>

@@ -6,7 +6,7 @@
       this.$http = $http;
       this.$state = $state;
       this.newStatementitem = {};
-      this.typeOptions = [
+      this.costTypeOptions = [
         'Lohn',
         'Material 1',
         'Material 2',
@@ -20,19 +20,24 @@
         'Weiter - bildung',
         'Diverses'
       ];
-      console.log('Options: ', this.typeOptions);
+      console.log('Cost Type Options: ', this.costTypeOptions);
+      this.incomeTypeOptions = [
+        'Ertrag Webentwicklung',
+        'Ertrag Webhosting',
+        'Diverse Erträge'
+      ];
+      console.log('Income Type Options: ', this.incomeTypeOptions);
 
     }
 
     $onInit() {
-      // when coming from member to add a thing
       this.statementItemParams = this.$state.params.statementItemId;
       console.log('Params: ', this.statementItemParams);
 
       if (this.statementItemParams) {
         this.editing = true;
 
-        this.$http.get('/api/statement/' + this.statementItemParams)
+        this.$http.get('/api/statements/' + this.statementItemParams)
           .then(response => {
             this.newStatementitem = response.data;
             console.log('Statement Item Data: ', this.newStatementitem);
@@ -60,24 +65,33 @@
         date: this.newStatementitem.date,
         infotext: this.newStatementitem.infotext,
         amount: this.newStatementitem.amount,
-        type: this.newStatementitem.type,
+        // type: this.newStatementitem.type,
+        costType: this.newStatementitem.costType,
+        incomeType: this.newStatementitem.incomeType,
         processed: this.newStatementitem.processed
       });
       
+      if(this.newStatementitem.processed) {
+        console.log('Processed triggered');
+      }
+
       this.$state.reload();
       
     }
     editStatementItem() {
-      if(this.newStatementitem.type !== undefined) {
-        console.log('this.newStatementitem.type:', this.newStatementitem.type);
+      if (this.newStatementitem.costType !== undefined || this.newStatementitem.incomeType !== undefined) {
+        console.log('this.newStatementitem.costType:', this.newStatementitem.costType);
         this.newStatementitem.processed = true;
       }
       this.$http.put('/api/statements/' + this.statementItemParams, {
-        provider: this.newStatementitem.provider,
+        provider: 'ABS AG',
+        //provider: this.newStatementitem.provider,
         date: this.newStatementitem.date,
         infotext: this.newStatementitem.infotext,
         amount: this.newStatementitem.amount,
-        type: this.newStatementitem.type,
+        // type: this.newStatementitem.type,
+        costType: this.newStatementitem.costType,
+        incomeType: this.newStatementitem.incomeType,
         processed: this.newStatementitem.processed
       });
       
