@@ -20,7 +20,7 @@
         'Versicherung',
         'Rep - Spesen',
         'Weiter - bildung',
-        'Diverses'
+        'Diverser Aufwand'
       ];
       console.log('Cost Type Options: ', this.costTypeOptions);
       this.incomeTypeOptions = [

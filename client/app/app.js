@@ -37,6 +37,7 @@ angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFulls
       return result;
     });
   }])
+
   .factory('pmkr.filterStabilize', [
     'pmkr.memoize',
     function (memoize) {
@@ -55,6 +56,7 @@ angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFulls
       return service;
     }
   ])
+  
   .factory('pmkr.memoize', [
     function () {
       function service() {

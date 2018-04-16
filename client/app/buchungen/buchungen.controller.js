@@ -2,11 +2,12 @@
 (function() {
 
     class BuchungenComponent {
-      constructor(StatementService, uiGridConstants, $location, $filter) {
+      constructor(StatementService, uiGridConstants, $location, $filter, $http) {
         this.StatementService = StatementService;
         this.uiGridConstants = uiGridConstants;
         this.$location = $location;
         this.$filter = $filter;
+        this.$http = $http;
 
         // Date conversion
         // ***********************
@@ -17,6 +18,15 @@
         // ***********************
 
           this.gridOptions = {
+
+            enableSorting: true,
+            enableFiltering: true,
+            showGridFooter: true,
+            showColumnFooter: true,
+            showColumnMenu: true,
+            multiSelect: true,
+            enableGridMenu: true,
+            enableSelectAll: true,
 
             columnDefs: [
             {
@@ -79,7 +89,12 @@
                 field: 'incomeType',
                 width: 200
               }, {
-              	field: 'processed'
+                name: 'OK',
+                field: 'processed',
+                sort: {
+                  direction: uiGridConstants.DESC,
+                  priority: 1
+                }
               }
             ]
 
@@ -95,8 +110,39 @@
             // obj for ui-grid
             self.gridOptions.data = data;
             console.log('Grid Data :', self.gridOptions.data);
+            for (let i = 0; i < self.gridOptions.data.length; i++) {
+              const element = self.gridOptions.data[i];
+              if (element.infotext === 'Belast. E-Banking Viseca Card Services SA') {
+                self.gridOptions.data[i].costType = 'Diverser Aufwand';
+              self.editStatementItem(self.gridOptions.data[i]);
+              }
+            }
           });
         } // end $onInit
+
+      editStatementItem(item) {
+
+        var self = this;
+        item.monat = self.$filter('date')(item.date, "MMMM");
+        item.jahr = self.$filter('date')(item.date, "yyyy");
+
+          item.processed = true;
+
+        self.$http.put('/api/statements/' + item._id, {
+          provider: 'ABS AG',
+          //provider: self.newStatementitem.provider,
+          // date: self.newStatementitem.date,
+          monat: item.monat,
+          jahr: item.jahr,
+          // infotext: self.newStatementitem.infotext,
+          // amount: self.newStatementitem.amount,
+          // type: self.newStatementitem.type,
+          costType: item.costType,
+          // incomeType: self.newStatementitem.incomeType,
+          processed: item.processed
+        });
+
+      }
 
         // to edit
         passItem(statementItem) {
