@@ -12,7 +12,10 @@ var StatementSchema = new mongoose.Schema({
   incomeType: String,
   processed: Boolean,
   monat: String,
-  jahr: String
+  jahr: String,
+  neutralTrans: { type: Boolean,
+                  default: false
+  }
 
 });
 

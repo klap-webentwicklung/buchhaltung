@@ -101,7 +101,8 @@
         // type: this.newStatementitem.type,
         costType: this.newStatementitem.costType,
         incomeType: this.newStatementitem.incomeType,
-        processed: this.newStatementitem.processed
+        processed: this.newStatementitem.processed,
+        neutralTrans: this.newStatementitem.neutralTrans
       });
       
       this.$state.go('buchungen');

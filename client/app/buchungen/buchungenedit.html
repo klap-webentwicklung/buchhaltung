@@ -18,7 +18,16 @@
 	<select name="income-type" ng-model="$ctrl.newStatementitem.incomeType" class="form-control" ng-init="$ctrl.newStatementitem.incomeType">
                         <option value="">Ertrags-Art</option>
                         <option ng-repeat="option in $ctrl.incomeTypeOptions" value="{{option}}">{{option}}</option>
-                    </select>
+					</select>
+	<div class="form-group">
+		<h5>Für Erfolgsrechnung neutrale Transaktion</h5>
+		<label class="radio-inline">
+			<input type="radio" name="neutral-trans" ng-model="$ctrl.newStatementitem.neutralTrans" ng-value="false"> Nein
+		</label>
+		<label class="radio-inline">
+			<input type="radio" name="neutral-trans" ng-model="$ctrl.newStatementitem.neutralTrans" ng-value="true" required> Ja
+		</label>
+	</div>
 	<!-- <input type="submit"> -->
 	<button type="submit" class="btn btn-success">Save</button>
 </form>
