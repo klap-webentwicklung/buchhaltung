@@ -59,7 +59,11 @@
           {
             name: 'Buchungs-Text',
             field: 'infotext',
-            width: 600
+            width: 600,
+            sort: {
+              direction: uiGridConstants.DESC,
+              priority: 2
+            }
           },
           //  {
           //   name: 'E-mail',
@@ -114,17 +118,45 @@
           const element = self.gridOptions.data[i];
           
           if (element.costType === "" || element.costType === undefined) {
-            // console.log('if costType empty triggered');
             switch (element.infotext) {
               case 'Belast. E-Banking Viseca Card Services SA':
               element.costType = 'Diverser Aufwand';
               self.editStatementItem(element);
-              console.log('element.costType 1:', element.costType);
               break;
               case 'Belast. E-Banking The Hub Zürich Association':
               element.costType = 'Miete Putzen EWZ';
               self.editStatementItem(element);
-              console.log('element.costType 2:', element.costType);
+              break;
+              case 'E-Rechnung Swisscom (Schweiz) AG':
+                element.costType = 'Büro und Telefon';
+              self.editStatementItem(element);
+              break;
+              case 'Belast. E-Banking DHL Express (Schweiz) AG':
+                element.costType = 'Büro und Telefon';
+              self.editStatementItem(element);
+              break;
+              case 'Dauerauftrag':
+                element.costType = 'Lohn';
+              self.editStatementItem(element);
+              case 'Belast. E-Banking Assura':
+                element.costType = 'Lohn';
+              self.editStatementItem(element);
+              break;
+              case 'Belast. E-Banking Dell SA':
+                element.costType = 'Diverser Aufwand';
+              self.editStatementItem(element);
+              break;
+              case 'Belast. E-Banking Digitec Galaxus AG':
+                element.costType = 'Hardware';
+              self.editStatementItem(element);
+              break;
+              case 'Belast. E-Banking Genossenschaft GGA Maur':
+                element.costType = 'Büro und Telefon';
+              self.editStatementItem(element);
+              break;
+              case 'Spesen':
+                element.costType = 'Diverser Aufwand';
+              self.editStatementItem(element);
               break;
             }
             
