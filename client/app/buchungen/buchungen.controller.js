@@ -122,6 +122,10 @@
                 element.costType = 'Miete Putzen EWZ';
                 self.editStatementItem(element);
                 
+              } else {
+                if(1+1=2) {
+                  console.log('foo');
+                }
               }
             }
 
