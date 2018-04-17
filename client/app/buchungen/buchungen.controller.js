@@ -103,7 +103,7 @@
     } // End Constructor
 
     $onInit() {
-
+      
       var self = this;
       // get marken via factory service
       this.StatementService.getStatements().then(function (data) {
@@ -112,9 +112,23 @@
         console.log('Grid Data :', self.gridOptions.data);
         for (let i = 0; i < self.gridOptions.data.length; i++) {
           const element = self.gridOptions.data[i];
+          
           if (element.costType === "" || element.costType === undefined) {
-
-            if (element.infotext === 'Belast. E-Banking Viseca Card Services SA') {
+            // console.log('if costType empty triggered');
+            switch (element.infotext) {
+              case 'Belast. E-Banking Viseca Card Services SA':
+              element.costType = 'Diverser Aufwand';
+              self.editStatementItem(element);
+              console.log('element.costType 1:', element.costType);
+              break;
+              case 'Belast. E-Banking The Hub Zürich Association':
+              element.costType = 'Miete Putzen EWZ';
+              self.editStatementItem(element);
+              console.log('element.costType 2:', element.costType);
+              break;
+            }
+            
+            /* if (element.infotext === 'Belast. E-Banking Viseca Card Services SA') {
               element.costType = 'Diverser Aufwand';
               self.editStatementItem(element);
             } else {
@@ -122,14 +136,11 @@
                 element.costType = 'Miete Putzen EWZ';
                 self.editStatementItem(element);
                 
-              } else {
-                if(1+1=2) {
-                  console.log('foo');
-                }
               }
-            }
-
+            } */
+            
           }
+          console.log('element.costType not empty');
         }
       });
     } // end $onInit
