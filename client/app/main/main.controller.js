@@ -20,7 +20,7 @@
             field: 'monat'
           },
           {
-            field: 'einkommen'
+            field: 'einnahmen'
           },
           {
             field: 'material'

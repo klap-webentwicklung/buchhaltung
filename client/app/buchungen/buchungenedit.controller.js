@@ -22,10 +22,16 @@
         'Weiter - bildung',
         'Diverser Aufwand'
       ];
+      this.currencies = [
+        'CHF',
+        'EUR',
+        'ETH'
+      ]
       console.log('Cost Type Options: ', this.costTypeOptions);
       this.incomeTypeOptions = [
-        'Ertrag Webentwicklung',
-        'Ertrag Webhosting',
+        'Webentwicklung',
+        'Webhosting',
+        'Mineing',
         'Diverse Erträge'
       ];
       console.log('Income Type Options: ', this.incomeTypeOptions);
@@ -43,6 +49,8 @@
           .then(response => {
             this.newStatementitem = response.data;
             console.log('Statement Item Data: ', this.newStatementitem);
+            this.newStatementitem.date = this.$filter('date')(this.newStatementitem.date, 'dd.MM.yyyy');
+            console.log('Statement Item Data Date: ', this.newStatementitem.date);
           });
       }
 
@@ -69,6 +77,7 @@
         monat: this.newStatementitem.monat,
         infotext: this.newStatementitem.infotext,
         amount: this.newStatementitem.amount,
+        currency: this.newStatementitem.currency,
         costType: this.newStatementitem.costType,
         incomeType: this.newStatementitem.incomeType,
         processed: this.newStatementitem.processed
@@ -90,19 +99,30 @@
         console.log('this.newStatementitem.costType:', this.newStatementitem.costType);
         this.newStatementitem.processed = true;
       }
+
+      if (this.newStatementitem.rateChfEth !== undefined) {
+        this.newStatementitem.amountChf = this.newStatementitem.amount * this.newStatementitem.rateChfEth;
+        this.newStatementitem.amountChf = this.$filter('number')((this.newStatementitem.amountChf), '2');
+        console.log('this.newStatementitem.amountChf:', this.newStatementitem.amountChf);
+
+      }
+
       this.$http.put('/api/statements/' + this.statementItemParams, {
-        provider: 'ABS AG',
-        //provider: this.newStatementitem.provider,
+        // provider: 'ABS AG',
+        provider: this.newStatementitem.provider,
         date: this.newStatementitem.date,
         monat: this.newStatementitem.monat,
         jahr: this.newStatementitem.jahr,
         infotext: this.newStatementitem.infotext,
         amount: this.newStatementitem.amount,
+        rateChfEth: this.newStatementitem.rateChfEth,
+        amountChf: this.newStatementitem.amountChf,
         // type: this.newStatementitem.type,
         costType: this.newStatementitem.costType,
         incomeType: this.newStatementitem.incomeType,
         processed: this.newStatementitem.processed,
-        neutralTrans: this.newStatementitem.neutralTrans
+        neutralTrans: this.newStatementitem.neutralTrans,
+        comment: this.newStatementitem.comment
       });
       
       this.$state.go('buchungen');

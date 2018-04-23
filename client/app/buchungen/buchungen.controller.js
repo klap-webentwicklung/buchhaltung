@@ -40,6 +40,17 @@
             aggregationType: uiGridConstants.aggregationTypes.count
           },
           {
+            name: 'Add',
+            field: 'actions',
+            width: 50,
+            enableFiltering: false,
+            enableSorting: false,
+            enableCellEdit: false,
+            cellTemplate: '<div class="btn-group"><button type="button" class="btn btn-default" ng-click="grid.appScope.$ctrl.newItem()">Add</button></div></td>',
+            // cellTemplate: '<div class="btn-group"><button type="button" class="btn btn-default" ng-click="grid.appScope.$ctrl.passItem(row.entity)">Edit</button></div></td>',
+            aggregationType: uiGridConstants.aggregationTypes.count
+          },
+          {
             name: 'Provider',
             field: 'provider',
             width: 140
@@ -182,7 +193,13 @@
           },
           {
             field: 'costType',
-            width: 200
+            width: 200,
+            filter: {
+              condition: function (searchTerm, cellValue) {
+                return cellValue !== 'Lohn';
+              },
+              noTerm: true
+            },
           },
           {
             field: 'incomeType',
@@ -227,7 +244,8 @@
 
 
       }; // End UI Grid Options2
-      // Grid Options 4
+
+      // Grid Options 4 (Zugeordnete Ertrags-Positionen)
       this.gridOptions4 = {
 
         enableSorting: true,
@@ -274,6 +292,9 @@
               direction: uiGridConstants.DESC,
               priority: 2
             }
+          },
+          {
+            field: 'comment'
           },
           {
             name: 'Betrag',
@@ -328,8 +349,81 @@
 
 
       }; // End UI Grid Options4
+
       // Grid Options 3 (Ertrags-Neutrale Positionen)
       this.gridOptions3 = {
+
+        enableSorting: true,
+        enableFiltering: true,
+        showGridFooter: true,
+        showColumnFooter: true,
+        showColumnMenu: true,
+        multiSelect: true,
+        enableGridMenu: true,
+        enableSelectAll: true,
+
+        columnDefs: [
+          {
+            name: 'Edit',
+            field: 'actions',
+            width: 50,
+            enableFiltering: false,
+            enableSorting: false,
+            enableCellEdit: false,
+            cellTemplate: '<div class="btn-group"><button type="button" class="btn btn-default" ng-click="grid.appScope.$ctrl.passItem(row.entity)">Edit</button></div></td>',
+            aggregationType: uiGridConstants.aggregationTypes.count
+          },
+          {
+            name: 'Provider',
+            field: 'provider',
+            width: 140
+          },
+          {
+            name: 'Datum',
+            field: 'date',
+            width: 120,
+            sort: {
+              direction: uiGridConstants.DESC,
+              priority: 1
+            }
+          },
+          {
+            field: 'jahr',
+          },
+          {
+            field: 'monat'
+          },
+          {
+            name: 'Buchungs-Text',
+            field: 'infotext',
+            width: 600
+          },
+          {
+            field: 'comment'
+          },
+          {
+            name: 'Betrag',
+            field: 'amount',
+            width: 100
+          }, {
+            name: 'OK',
+            field: 'processed'
+          }, {
+            name: 'Neut. Trans',
+            field: 'neutralTrans',
+            filter: {
+              condition: function (searchTerm, cellValue) {
+                return cellValue === true;
+              },
+              noTerm: true
+            },
+            visible: false
+          }
+        ]
+      }; // End UI Grid Options3
+
+      // Grid Options 5 (alle Positionen)
+      this.gridOptions5 = {
 
         enableSorting: true,
         enableFiltering: true,
@@ -377,9 +471,20 @@
             }
           },
           {
+            field: 'comment'
+          },
+          {
             name: 'Betrag',
             field: 'amount',
             width: 100
+          }, {
+            field: 'costType',
+            width: 200
+            
+          },
+          {
+            field: 'incomeType',
+            width: 200
           }, {
             name: 'OK',
             field: 'processed',
@@ -387,32 +492,20 @@
               direction: uiGridConstants.DESC,
               priority: 1
             },
-            filter: {
-              condition: function (searchTerm, cellValue) {
-                return cellValue === true;
-              },
-              noTerm: true
-            },
-            visible: false
+            
           }, {
             name: 'Neut. Trans',
             field: 'neutralTrans',
             sort: {
               direction: uiGridConstants.DESC,
               priority: 3
-            },
-            filter: {
-              condition: function (searchTerm, cellValue) {
-                return cellValue === true;
-              },
-              noTerm: true
-            },
-            visible: false
+            }
           }
         ]
 
 
-      }; // End UI Grid Options2
+      }; // End UI Grid Options5
+
     } // End Constructor
 
     $onInit() {
@@ -425,14 +518,53 @@
         self.gridOptions2.data = data;
         self.gridOptions3.data = data;
         self.gridOptions4.data = data;
-        console.log('Grid Data :', self.gridOptions.data);
+        self.gridOptions5.data = data;
+        console.log('Grid Data :', self.gridOptions1.data);
         for (let i = 0; i < self.gridOptions1.data.length; i++) {
           const element = self.gridOptions1.data[i];
 
           if (element.costType === "" || element.costType === undefined && element.neutralTrans === false) {
+
+            var re = new RegExp("Bancomat [^]*");
+            if (re.test(element.infotext)) {
+              element.costType = 'Lohn';
+              self.editStatementItem(element);
+            } 
+            
+            var re1 = new RegExp("Einkauf [^]*MIGROS [^]*");
+            if (re1.test(element.infotext)) {
+              element.costType = 'Lohn';
+              self.editStatementItem(element);
+            } 
+            
+            var re2 = new RegExp("Einkauf [^]* COOP[^]*");
+            if (re2.test(element.infotext)) {
+              console.log("Valid");
+              element.costType = 'Lohn';
+              self.editStatementItem(element);
+            } 
+
             switch (element.infotext) {
               case 'Belast. E-Banking Viseca Card Services SA':
-                element.costType = 'Diverser Aufwand';
+                // element.costType = 'Diverser Aufwand';
+                element.neutralTrans = true;
+                self.editStatementItem(element);
+                break;
+              case 'Belast. E-Banking PayPal International Ltd':
+                // element.costType = 'Diverser Aufwand';
+                element.neutralTrans = true;
+                self.editStatementItem(element);
+                break;
+              case 'Einkauf Debitkarte':
+                element.costType = 'Lohn';
+                self.editStatementItem(element);
+                break;
+              case 'E-Rechnung Sunrise Communications AG':
+                element.costType = 'Lohn';
+                self.editStatementItem(element);
+                break;
+              case 'Belast. E-Banking Marinus Angelo Klap':
+                element.costType = 'Lohn';
                 self.editStatementItem(element);
                 break;
               case 'Belast. E-Banking The Hub Zürich Association':
@@ -444,6 +576,10 @@
                 self.editStatementItem(element);
                 break;
               case 'Belast. E-Banking DHL Express (Schweiz) AG':
+                element.costType = 'Büro und Telefon';
+                self.editStatementItem(element);
+                break;
+              case 'E-Rechnung Genossenschaft GGA Maur':
                 element.costType = 'Büro und Telefon';
                 self.editStatementItem(element);
                 break;
@@ -474,6 +610,10 @@
                 element.neutralTrans = true;
                 self.editStatementItem(element);
                 break;
+              case 'Belast. E-Banking Klap Web Development':
+                element.neutralTrans = true;
+                self.editStatementItem(element);
+                break;
             }
 
             /* if (element.infotext === 'Belast. E-Banking Viseca Card Services SA') {
@@ -488,7 +628,7 @@
             } */
 
           }
-          console.log('element.costType not empty');
+          // console.log('element.costType not empty');
         }
       });
     } // end $onInit
@@ -516,6 +656,11 @@
     passItem(statementItem) {
       this.$location.path('/buchungenedit/' + statementItem._id);
       // this.$state.go('mitgliededit', {memberId: member._id});
+    }
+  
+    // go to new item
+    newItem() {
+      this.$location.path('/buchungenedit/');
     }
   }
 

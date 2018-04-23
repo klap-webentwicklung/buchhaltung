@@ -7,6 +7,11 @@ var StatementSchema = new mongoose.Schema({
   date: Date, 
   infotext: String,
   amount: Number,
+  currency: { type: String,
+              default: 'CHF'
+  },
+  rateChfEth: Number,
+  amountChf: Number,
   type: String,
   costType: String,
   incomeType: String,
@@ -15,7 +20,11 @@ var StatementSchema = new mongoose.Schema({
   jahr: String,
   neutralTrans: { type: Boolean,
                   default: false
-  }
+  },
+  comment: String,
+  belegsArt: { type: String,
+              default: 'Digital'
+              }
 
 });
 
