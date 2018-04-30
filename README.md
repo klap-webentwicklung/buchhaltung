@@ -29,3 +29,9 @@ Run `grunt build` for building and `grunt serve` for preview.
 ## Testing
 
 Running `npm test` will run the unit tests with karma.
+
+## Data Import
+
+Local:
+
+mongoimport -d buchhaltung -c statements --file C:\data\imp\abs_kk_1.csv --type csv --columnsHaveTypes --fields "provider.string(),account.string(),accountName.string(),date.date_ms(dd.MM.yy),infotext.string(),amount.decimal()"

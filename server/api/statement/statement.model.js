@@ -3,10 +3,14 @@
 import mongoose from 'mongoose';
 
 var StatementSchema = new mongoose.Schema({
+  // Import fields
   provider: String,
+  account: String,
+  accountName: String,
   date: Date, 
   infotext: String,
   amount: Number,
+  // end import fields
   currency: { type: String,
               default: 'CHF'
   },
