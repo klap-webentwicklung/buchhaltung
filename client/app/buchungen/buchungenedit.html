@@ -4,28 +4,62 @@
 	<article class="col-md-8 col-md-offset-2">
 <form name="editForm" ng-submit="$ctrl.saveStatementItem()">
 	<!-- <input type="text" name="provider" class="form-control" ng-model="$ctrl.newStatementitem.provider"> -->
-	<input type="text" name="source" class="form-control" ng-model="$ctrl.newStatementitem.provider">
-	<input type="text" name="date" class="form-control" ng-model="$ctrl.newStatementitem.date" placeholder="tt.mm.jjjj">
-	<input type="text" name="infotext" class="form-control" ng-model="$ctrl.newStatementitem.infotext" placeholder="Info Text">
-	<input type="number" step=".00000001" name="amount" class="form-control" placeholder="Betrag" ng-model="$ctrl.newStatementitem.amount">
-	<input type="number" step=".00001" name="rate-chf-eth" class="form-control" placeholder="CHF/ETH" ng-model="$ctrl.newStatementitem.rateChfEth">
-	<input type="number" step=".01" name="amount-chf" class="form-control" ng-model="$ctrl.newStatementitem.amountChf" readonly>
-	<select name="currency" ng-model="$ctrl.newStatementitem.currency" class="form-control" ng-init="$ctrl.newStatementitem.currency">
-		<option value="">Währung</option>
-		<option ng-repeat="option in $ctrl.currencies" value="{{option}}">{{option}}</option>
-	</select>
+	<!-- <div class="form-group">
+	<label for="provider">Provider</label>
+	<input type="text" name="provider" class="form-control" ng-model="$ctrl.newStatementitem.provider">
+	</div> -->
+	<div class="form-group">
+		<label for="cost-type">Provider</label>
+		<select name="provider" ng-model="$ctrl.newStatementitem.provider" class="form-control" ng-init="$ctrl.newStatementitem.provider">
+			<option value="">Provider</option>
+			<option ng-repeat="option in $ctrl.providerOptions" value="{{option}}">{{option}}</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="date">Datum</label>
+		<input type="text" name="date" class="form-control" ng-model="$ctrl.newStatementitem.date" placeholder="tt.mm.jjjj">
+	</div>
+	<div class="form-group">
+		<label for="infotext">Infotext</label>
+		<input type="text" name="infotext" class="form-control" ng-model="$ctrl.newStatementitem.infotext" placeholder="Info Text">
+	</div>
+	<div class="form-group">
+		<label for="amount">Betrag</label>
+		<input type="number" step=".00000001" name="amount" class="form-control" placeholder="Betrag" ng-model="$ctrl.newStatementitem.amount">
+	</div>
+	<div class="form-group">
+		<label for="rate">Umrechnungskurs</label>
+		<input type="number" step=".00001" name="rate" class="form-control" placeholder="Umrechnungskurs" ng-model="$ctrl.newStatementitem.rate">
+	</div>
+	<div class="form-group">
+		<label for="amount">Betrag CHF</label>
+		<input type="number" step=".01" name="amount" class="form-control" ng-model="$ctrl.newStatementitem.amount" readonly>
+	</div>
+	<div class="form-group">
+		<label for="currency">Währung</label>
+		<select name="currency" ng-model="$ctrl.newStatementitem.currency" class="form-control" ng-init="$ctrl.newStatementitem.currency">
+			<option value="">Währung</option>
+			<option ng-repeat="option in $ctrl.currencies" value="{{option}}">{{option}}</option>
+		</select>
+	</div>
 	<!-- <select name="type" ng-model="$ctrl.newStatementitem.type" class="form-control" ng-init="$ctrl.newStatementitem.type">
 		<option value="">Aufwand Art</option>
 		<option ng-repeat="option in $ctrl.typeOptions" value="{{option}}">{{option}}</option>
 	</select> -->
-	<select name="cost-type" ng-model="$ctrl.newStatementitem.costType" class="form-control" ng-init="$ctrl.newStatementitem.costType">
-		<option value="">Aufwand Art</option>
-		<option ng-repeat="option in $ctrl.costTypeOptions" value="{{option}}">{{option}}</option>
-	</select>
-	<select name="income-type" ng-model="$ctrl.newStatementitem.incomeType" class="form-control" ng-init="$ctrl.newStatementitem.incomeType">
-		<option value="">Ertrags-Art</option>
-		<option ng-repeat="option in $ctrl.incomeTypeOptions" value="{{option}}">{{option}}</option>
-	</select>
+	<div class="form-group">
+		<label for="cost-type">Aufwand Art</label>
+		<select name="cost-type" ng-model="$ctrl.newStatementitem.costType" class="form-control" ng-init="$ctrl.newStatementitem.costType">
+			<option value="">Aufwand Art</option>
+			<option ng-repeat="option in $ctrl.costTypeOptions" value="{{option}}">{{option}}</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="income-type">Ertrags-Art</label>
+		<select name="income-type" ng-model="$ctrl.newStatementitem.incomeType" class="form-control" ng-init="$ctrl.newStatementitem.incomeType">
+			<option value="">Ertrags-Art</option>
+			<option ng-repeat="option in $ctrl.incomeTypeOptions" value="{{option}}">{{option}}</option>
+		</select>
+	</div>
 	<div class="form-group">
 		<h5>Für Erfolgsrechnung neutrale Transaktion</h5>
 		<label class="radio-inline">
@@ -35,7 +69,10 @@
 			<input type="radio" name="neutral-trans" ng-model="$ctrl.newStatementitem.neutralTrans" ng-value="true" required> Ja
 		</label>
 	</div>
-	<input type="text" name="comment" class="form-control" ng-model="$ctrl.newStatementitem.comment" placeholder="Kommentar">
+	<div class="form-group">
+		<label for="comment">Kommentare</label>
+		<input type="text" name="comment" class="form-control" ng-model="$ctrl.newStatementitem.comment" placeholder="Kommentar">
+	</div>
 	<!-- <input type="submit"> -->
 	<button type="submit" class="btn btn-success">Save</button>
 </form>

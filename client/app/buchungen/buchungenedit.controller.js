@@ -22,17 +22,24 @@
         'Weiter - bildung',
         'Diverser Aufwand'
       ];
+      console.log('Cost Type Options: ', this.costTypeOptions);
       this.currencies = [
         'CHF',
         'EUR',
         'ETH'
-      ]
-      console.log('Cost Type Options: ', this.costTypeOptions);
+      ];
+      this.providerOptions = [
+        'ABS',
+        'ABS AG',
+        'Ethereum Network'
+      ];
       this.incomeTypeOptions = [
-        'Webentwicklung',
+        /* 'Webentwicklung',
         'Webhosting',
         'Mineing',
-        'Diverse Erträge'
+        'Diverse Erträge' */
+        'Einnahmen',
+        'Naturalbezüge'
       ];
       console.log('Income Type Options: ', this.incomeTypeOptions);
 
@@ -51,6 +58,10 @@
             console.log('Statement Item Data: ', this.newStatementitem);
             this.newStatementitem.date = this.$filter('date')(this.newStatementitem.date, 'dd.MM.yyyy');
             console.log('Statement Item Data Date: ', this.newStatementitem.date);
+            if (this.newStatementitem.currency === 'ETH') {
+              this.newStatementitem.amount = this.newStatementitem.amount / this.newStatementitem.rate;
+              console.log('this.newStatementitem.amount:', this.newStatementitem.amount);
+            }
           });
       }
 
@@ -100,10 +111,12 @@
         this.newStatementitem.processed = true;
       }
 
-      if (this.newStatementitem.rateChfEth !== undefined) {
-        this.newStatementitem.amountChf = this.newStatementitem.amount * this.newStatementitem.rateChfEth;
-        this.newStatementitem.amountChf = this.$filter('number')((this.newStatementitem.amountChf), '2');
-        console.log('this.newStatementitem.amountChf:', this.newStatementitem.amountChf);
+      if (this.newStatementitem.currency === 'ETH') {
+        this.newStatementitem.amountEth = this.newStatementitem.amount;
+        console.log('this.newStatementitem.amountEth:', this.newStatementitem.amountEth);
+        this.newStatementitem.amount = this.newStatementitem.amount * this.newStatementitem.rate;
+        this.newStatementitem.amount = this.$filter('number')((this.newStatementitem.amount), '2');
+        console.log('this.newStatementitem.amount:', this.newStatementitem.amount);
 
       }
 
@@ -115,8 +128,8 @@
         jahr: this.newStatementitem.jahr,
         infotext: this.newStatementitem.infotext,
         amount: this.newStatementitem.amount,
-        rateChfEth: this.newStatementitem.rateChfEth,
-        amountChf: this.newStatementitem.amountChf,
+        rate: this.newStatementitem.rate,
+        amountEth: this.newStatementitem.amountEth,
         // type: this.newStatementitem.type,
         costType: this.newStatementitem.costType,
         incomeType: this.newStatementitem.incomeType,

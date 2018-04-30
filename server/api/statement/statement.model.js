@@ -10,12 +10,14 @@ var StatementSchema = new mongoose.Schema({
   date: Date, 
   infotext: String,
   amount: Number,
+  // amountEur: Number,
   // end import fields
+  amountEth: Number,
   currency: { type: String,
               default: 'CHF'
   },
-  rateChfEth: Number,
-  amountChf: Number,
+  rate: Number,
+  // amountChf: Number, -> amount
   type: String,
   costType: String,
   incomeType: String,

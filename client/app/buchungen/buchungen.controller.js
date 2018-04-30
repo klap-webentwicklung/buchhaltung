@@ -8,7 +8,7 @@
       this.$location = $location;
       this.$filter = $filter;
       this.$http = $http;
-
+      
       // Date conversion
       // ***********************
       // var stringDateD = "21.09.2017";
@@ -505,6 +505,69 @@
 
 
       }; // End UI Grid Options5
+      
+      // Grid Options6
+      this.gridOptions6 = {
+
+        columnDefs: [
+
+          {
+            field: 'datum'
+          },
+          {
+            field: 'einnahmenEth'
+          },
+          {
+            field: 'ethChf'
+          },
+          {
+            field: 'naturalbezug'
+          },
+          {
+            field: 'einnahmen'
+          },
+          {
+            field: 'lohn'
+          },
+          {
+            field: 'material'
+          },
+          {
+            field: 'hardware'
+          },
+          {
+            field: 'software'
+          },
+          {
+            field: 'mietePutzenEWZ'
+          },
+          {
+            field: 'bueroTelefon'
+          },
+          {
+            field: 'transport'
+          },
+          {
+            field: 'werbung'
+          },
+          {
+            field: 'ahv'
+          },
+          {
+            field: 'versicherung'
+          },
+          {
+            field: 'repSpesen'
+          },
+          {
+            field: 'weiterBildung'
+          },
+          {
+            field: 'diverses'
+          }
+        ]
+
+      }; // End UI Grid Options6
 
     } // End Constructor
 
@@ -631,6 +694,29 @@
           // console.log('element.costType not empty');
         }
       });
+
+      this.gridOptions6.data = [{
+        jahr: "2018",
+        monat: "Januar",
+        datum: "11.",
+        einnahmenEth: 1.1,
+        rateChfEth: 600,
+        amountChf: null, // naturalbezug
+        /*einnahmen: null,
+        material: 40,
+        lohn: 200,
+        hardware: null,
+        software: null,
+        mietePutzenEWZ: null,
+        bueroTelefon: null,
+        transport: null,
+        werbung: null,
+        ahv: null,
+        versicherung: null,
+        repSpesen: null,
+        weiterBildung: null,
+        diverses: null */
+      }];
     } // end $onInit
 
     editStatementItem(item) {
