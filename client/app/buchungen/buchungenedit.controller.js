@@ -46,6 +46,7 @@
     }
 
     $onInit() {
+
       this.statementItemParams = this.$state.params.statementItemId;
       console.log('Params: ', this.statementItemParams);
 
@@ -56,20 +57,59 @@
           .then(response => {
             this.newStatementitem = response.data;
             console.log('Statement Item Data: ', this.newStatementitem);
-            this.newStatementitem.date = this.$filter('date')(this.newStatementitem.date, 'dd.MM.yyyy');
+            // Date String has to be changed in Date Ojs to be loaded in date imput
+            this.newStatementitem.date = new Date(this.newStatementitem.date);
             console.log('Statement Item Data Date: ', this.newStatementitem.date);
+            // ETH positions cant be edited and should not as original amount gets overwritten with fasle value
             if (this.newStatementitem.currency === 'ETH') {
+              // calc not correct but cant be saved
               this.newStatementitem.amount = this.newStatementitem.amount / this.newStatementitem.rate;
+               //this.newStatementitem.amount = this.$filter('number')((this.newStatementitem.amount / this.newStatementitem.rate),8);
               console.log('this.newStatementitem.amount:', this.newStatementitem.amount);
             }
           });
       }
 
-    }
+    } // end on Init
 
     saveStatementItem() {
       this.submitted = true;
-
+      
+      console.log('Date: ', this.newStatementitem.date);
+      this.newStatementitem.monat = this.$filter('date')(this.newStatementitem.date, "MMMM");
+      this.newStatementitem.jahr = this.$filter('date')(this.newStatementitem.date, "yyyy");
+      this.newStatementitem.tag = this.$filter('date')(this.newStatementitem.date, "dd");
+      
+      if (this.newStatementitem.costType !== undefined || this.newStatementitem.incomeType !== undefined) {
+        console.log('this.newStatementitem.costType:', this.newStatementitem.costType);
+        this.newStatementitem.processed = true;
+      }
+      
+      if (this.newStatementitem.currency === 'ETH') {
+        this.newStatementitem.amountEth = this.newStatementitem.amount;
+        console.log('this.newStatementitem.amountEth:', this.newStatementitem.amountEth);
+        this.newStatementitem.amount = this.newStatementitem.amount * this.newStatementitem.rate;
+        this.newStatementitem.amount = this.$filter('number')((this.newStatementitem.amount), '2');
+        console.log('this.newStatementitem.amount:', this.newStatementitem.amount);
+        
+      }
+          this.itemObj = {
+            provider: this.newStatementitem.provider,
+              date: this.newStatementitem.date,
+              monat: this.newStatementitem.monat,
+              jahr: this.newStatementitem.jahr,
+              tag: this.newStatementitem.tag,
+              infotext: this.newStatementitem.infotext,
+              amount: this.newStatementitem.amount,
+              rate: this.newStatementitem.rate,
+              amountEth: this.newStatementitem.amountEth,
+              costType: this.newStatementitem.costType,
+              incomeType: this.newStatementitem.incomeType,
+              processed: this.newStatementitem.processed,
+              neutralTrans: this.newStatementitem.neutralTrans,
+              comment: this.newStatementitem.comment,
+              currency: this.newStatementitem.currency
+          };
       if (this.statementItemParams && this.statementItemParams.length > 0) {
 
         this.editStatementItem();
@@ -81,62 +121,18 @@
     }
 
     addStatementItem() {
-
-        this.$http.post('/api/statements', {
-        provider: this.newStatementitem.provider,
-        date: this.newStatementitem.date,
-        monat: this.newStatementitem.monat,
-        infotext: this.newStatementitem.infotext,
-        amount: this.newStatementitem.amount,
-        currency: this.newStatementitem.currency,
-        costType: this.newStatementitem.costType,
-        incomeType: this.newStatementitem.incomeType,
-        processed: this.newStatementitem.processed
-      });
-      
-      if(this.newStatementitem.processed) {
-        console.log('Processed triggered');
+        this.$http.post('/api/statements', this.itemObj);
+        
+        if(this.newStatementitem.processed) {
+          console.log('Processed triggered');
+        }
+        
+        // this.$state.reload();
+        this.$state.go('buchungen');
+        
       }
-
-      // this.$state.reload();
-      
-    }
-    editStatementItem() {
-
-      this.newStatementitem.monat = this.$filter('date')(this.newStatementitem.date, "MMMM");
-      this.newStatementitem.jahr = this.$filter('date')(this.newStatementitem.date, "yyyy");
-
-      if (this.newStatementitem.costType !== undefined || this.newStatementitem.incomeType !== undefined) {
-        console.log('this.newStatementitem.costType:', this.newStatementitem.costType);
-        this.newStatementitem.processed = true;
-      }
-
-      if (this.newStatementitem.currency === 'ETH') {
-        this.newStatementitem.amountEth = this.newStatementitem.amount;
-        console.log('this.newStatementitem.amountEth:', this.newStatementitem.amountEth);
-        this.newStatementitem.amount = this.newStatementitem.amount * this.newStatementitem.rate;
-        this.newStatementitem.amount = this.$filter('number')((this.newStatementitem.amount), '2');
-        console.log('this.newStatementitem.amount:', this.newStatementitem.amount);
-
-      }
-
-      this.$http.put('/api/statements/' + this.statementItemParams, {
-        // provider: 'ABS AG',
-        provider: this.newStatementitem.provider,
-        date: this.newStatementitem.date,
-        monat: this.newStatementitem.monat,
-        jahr: this.newStatementitem.jahr,
-        infotext: this.newStatementitem.infotext,
-        amount: this.newStatementitem.amount,
-        rate: this.newStatementitem.rate,
-        amountEth: this.newStatementitem.amountEth,
-        // type: this.newStatementitem.type,
-        costType: this.newStatementitem.costType,
-        incomeType: this.newStatementitem.incomeType,
-        processed: this.newStatementitem.processed,
-        neutralTrans: this.newStatementitem.neutralTrans,
-        comment: this.newStatementitem.comment
-      });
+      editStatementItem() {
+        this.$http.put('/api/statements/' + this.statementItemParams, this.itemObj);
       
       this.$state.go('buchungen');
     }

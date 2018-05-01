@@ -17,7 +17,7 @@
 	</div>
 	<div class="form-group">
 		<label for="date">Datum</label>
-		<input type="text" name="date" class="form-control" ng-model="$ctrl.newStatementitem.date" placeholder="tt.mm.jjjj">
+		<input type="date" name="date" class="form-control" ng-model="$ctrl.newStatementitem.date" placeholder="tt.mm.jjjj">
 	</div>
 	<div class="form-group">
 		<label for="infotext">Infotext</label>
@@ -32,15 +32,15 @@
 		<input type="number" step=".00001" name="rate" class="form-control" placeholder="Umrechnungskurs" ng-model="$ctrl.newStatementitem.rate">
 	</div>
 	<div class="form-group">
-		<label for="amount">Betrag CHF</label>
-		<input type="number" step=".01" name="amount" class="form-control" ng-model="$ctrl.newStatementitem.amount" readonly>
-	</div>
-	<div class="form-group">
 		<label for="currency">Währung</label>
 		<select name="currency" ng-model="$ctrl.newStatementitem.currency" class="form-control" ng-init="$ctrl.newStatementitem.currency">
 			<option value="">Währung</option>
 			<option ng-repeat="option in $ctrl.currencies" value="{{option}}">{{option}}</option>
 		</select>
+	</div>
+	<div class="form-group">
+		<label for="amount">Betrag CHF</label>
+		<input type="number" step=".01" name="amount" class="form-control" ng-model="$ctrl.newStatementitem.amount" readonly>
 	</div>
 	<!-- <select name="type" ng-model="$ctrl.newStatementitem.type" class="form-control" ng-init="$ctrl.newStatementitem.type">
 		<option value="">Aufwand Art</option>

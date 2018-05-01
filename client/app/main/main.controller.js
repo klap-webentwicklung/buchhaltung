@@ -15,9 +15,12 @@
       this.gridOptions = {
 
         columnDefs: [
-          
           {
-            field: 'monat'
+            field: 'tag'
+          },
+          {
+            field: 'monat',
+            visible: false
           },
           {
             field: 'einnahmen'
@@ -62,7 +65,6 @@
             field: 'diverses'
           }
         ]
-
       }; // End UI Grid Options
 
     } // end constructor
@@ -82,24 +84,28 @@
           console.log('buchungenMonat grouped:', buchungenMonatGrouped);
         });
 
-      this.gridOptions.data = [{
-        jahr: "2017",
-        monat: "Januar",
-        einkommen: 200,
-        material: 40,
-        lohn: 200,
-        hardware: null,
-        software: null,
-        mietePutzenEWZ: null,
-        bueroTelefon: null,
-        transport:null,
-        werbung: null,
-        ahv: null,
-        versicherung: null,
-        repSpesen: null,
-        weiterBildung: null,
-        diverses: null
-      }];
+        this.gridOptions.data = [{
+          jahr: "2018",
+          monat: "Januar",
+          tag: "11.",
+          einnahmenEth: 1.1,
+          rateChfEth: 600,
+          amountChf: null, // naturalbezug
+          /*einnahmen: null,
+          material: 40,
+          lohn: 200,
+          hardware: null,
+          software: null,
+          mietePutzenEWZ: null,
+          bueroTelefon: null,
+          transport: null,
+          werbung: null,
+          ahv: null,
+          versicherung: null,
+          repSpesen: null,
+          weiterBildung: null,
+          diverses: null */
+        }];
 
       /* this.$http.get('/api/things')
         .then(response => {

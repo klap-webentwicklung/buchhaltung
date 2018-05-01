@@ -24,6 +24,7 @@ var StatementSchema = new mongoose.Schema({
   processed: Boolean,
   monat: String,
   jahr: String,
+  tag: String,
   neutralTrans: { type: Boolean,
                   default: false
   },

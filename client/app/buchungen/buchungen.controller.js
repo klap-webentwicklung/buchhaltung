@@ -695,28 +695,6 @@
         }
       });
 
-      this.gridOptions6.data = [{
-        jahr: "2018",
-        monat: "Januar",
-        datum: "11.",
-        einnahmenEth: 1.1,
-        rateChfEth: 600,
-        amountChf: null, // naturalbezug
-        /*einnahmen: null,
-        material: 40,
-        lohn: 200,
-        hardware: null,
-        software: null,
-        mietePutzenEWZ: null,
-        bueroTelefon: null,
-        transport: null,
-        werbung: null,
-        ahv: null,
-        versicherung: null,
-        repSpesen: null,
-        weiterBildung: null,
-        diverses: null */
-      }];
     } // end $onInit
 
     editStatementItem(item) {
