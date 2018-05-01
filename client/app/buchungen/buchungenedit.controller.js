@@ -59,13 +59,13 @@
             console.log('Statement Item Data: ', this.newStatementitem);
             // Date String has to be changed in Date Ojs to be loaded in date imput
             this.newStatementitem.date = new Date(this.newStatementitem.date);
-            console.log('Statement Item Data Date: ', this.newStatementitem.date);
+            // console.log('Statement Item Data Date: ', this.newStatementitem.date);
             // ETH positions cant be edited and should not as original amount gets overwritten with fasle value
             if (this.newStatementitem.currency === 'ETH') {
               // calc not correct but cant be saved
               this.newStatementitem.amount = this.newStatementitem.amount / this.newStatementitem.rate;
-               //this.newStatementitem.amount = this.$filter('number')((this.newStatementitem.amount / this.newStatementitem.rate),8);
-              console.log('this.newStatementitem.amount:', this.newStatementitem.amount);
+               // this.newStatementitem.amount = this.$filter('number')((this.newStatementitem.amount / this.newStatementitem.rate),8);
+              // console.log('this.newStatementitem.amount:', this.newStatementitem.amount);
             }
           });
       }
