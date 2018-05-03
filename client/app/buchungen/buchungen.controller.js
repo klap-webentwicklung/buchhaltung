@@ -37,7 +37,15 @@
             enableSorting: false,
             enableCellEdit: false,
             cellTemplate: '<div class="btn-group"><button type="button" class="btn btn-default" ng-click="grid.appScope.$ctrl.passItem(row.entity)">Edit</button></div></td>',
-            aggregationType: uiGridConstants.aggregationTypes.count
+          },
+          {
+            name: 'Delete',
+            field: 'actions',
+            width: 50,
+            enableFiltering: false,
+            enableSorting: false,
+            enableCellEdit: false,
+            cellTemplate: '<div class="btn-group"><button type="button" class="btn btn-default" ng-click="grid.appScope.$ctrl.deleteItem(row.entity)">Delete</button></div></td>',
           },
           {
             name: 'Add',
@@ -726,7 +734,13 @@
     newItem() {
       this.$location.path('/buchungenedit/');
     }
+
+    deleteItem(statementItem) {
+      this.$http.delete('/api/statements/' + statementItem._id);
+      this.$state.reload();
+  } 
   }
+
 
   angular.module('angularFullstackApp')
     .component('buchungen', {

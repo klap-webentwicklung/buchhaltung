@@ -12,21 +12,61 @@
       this.$location = $location;
       this.$filter = $filter;
       this.reverse = true;
+      this.costAmount = 0;
+      this.incomeChfAmount = 0;
+      this.incomeEthAmount = 0;
 
       this.gridOptions = {
 
-        showGridFooter: true,
         showColumnFooter: true,
+        enableFiltering: true,
+        enableSorting: true,
 
-        columnDefs: [
+        columnDefs: [ {
+          name: 'Edit',
+            field: 'actions',
+            width: 50,
+            enableFiltering: false,
+            enableSorting: false,
+            enableCellEdit: false,
+            cellTemplate: '<div class="btn-group"><button type="button" class="btn btn-default" ng-click="grid.appScope.$ctrl.passItem(row.entity)">Edit</button></div></td>',
+            aggregationType: uiGridConstants.aggregationTypes.count
+          },
           {
-            field: 'tag'
+            field: 'neutralTrans',
+            filter: {
+              condition: function (searchTerm, cellValue) {
+                return cellValue === false;
+              },
+              noTerm: true
+            },
+            visible: false
+          },
+          {
+            field: 'tag',
+            sort: {
+              direction: uiGridConstants.ASC,
+              priority: 1
+            }
           },
           {
             field: 'monat',
             visible: false
           },
           {
+            field: 'amountEth',
+            aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true
+          },
+                  {
+                    field: 'rate',
+                  },
+          {
+            name: 'Naturalbezüge',
+            field: 'naturalbezuege',
+            aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true
+          },
+          {
+            name: 'einnahmen',
             field: 'einnahmen',
             aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true
           },
@@ -100,14 +140,18 @@
     
     $onInit() {
       
-      // is undefined
-      
-      
-      
       this.$http.get('/api/statements')
       .then(response => {
         this.buchungen = response.data;
         // console.log('this.buchungen:', this.buchungen);
+             
+        /* this.buchungen.forEach(element => {
+          
+          if(element.processed === true) {
+            console.log('buchung processed true', element);
+              
+          }
+        }); */
         
         // groop buchungen by "jahr"
         var buchungenJahrOrdered = this.$filter('orderBy')(this.buchungen, "jahr", this.reverse);
@@ -120,9 +164,13 @@
         
         jahr2018.forEach(element => {
           
-          /* if(element.costType === "Versicherung") {
-            element.versicherung = element.amount;
-          }  */
+          if(element.incomeType === "Einnahmen") {
+            element.einnahmen = element.amount;
+          }
+          
+          if(element.incomeType === "Naturalbezüge") {
+            element.naturalbezuege = element.amount;
+          }
           
           switch (element.costType) {
             case 'Versicherung':
@@ -167,9 +215,7 @@
                 case 'Diverser Aufwand':
                 element.material = element.amount;
                 break;
-                
               }
-              
             });
             
             // groop buchungen by "monat"
@@ -216,8 +262,14 @@
             }); */
           });
         };
+
+            // to edit
+    passItem(statementItem) {
+      this.$location.path('/buchungenedit/' + statementItem._id);
+      // this.$state.go('mitgliededit', {memberId: member._id});
+    }
         
-        addThing() {
+     /*    addThing() {
           if (this.newThing) {
             this.$http.post('/api/things', {
               name: this.newThing
@@ -228,7 +280,7 @@
         
         deleteThing(thing) {
           this.$http.delete('/api/things/' + thing._id);
-    }
+    } */
   }
 
   angular.module('angularFullstackApp')

@@ -88,8 +88,8 @@
       if (this.newStatementitem.currency === 'ETH') {
         this.newStatementitem.amountEth = this.newStatementitem.amount;
         console.log('this.newStatementitem.amountEth:', this.newStatementitem.amountEth);
-        this.newStatementitem.amount = this.newStatementitem.amount * this.newStatementitem.rate;
-        this.newStatementitem.amount = this.$filter('number')((this.newStatementitem.amount), '2');
+        this.newStatementitem.amount = Number(this.newStatementitem.amount * this.newStatementitem.rate);
+        // this.newStatementitem.amount = this.$filter('number')((this.newStatementitem.amount), '2');
         console.log('this.newStatementitem.amount:', this.newStatementitem.amount);
         
       }
