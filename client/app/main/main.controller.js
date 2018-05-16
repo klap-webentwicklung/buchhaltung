@@ -4,7 +4,7 @@
 
   class MainController {
 
-    constructor($http, StatementService, uiGridConstants, $location, $filter, $scope) {
+    constructor($http, StatementService, uiGridConstants, $location, $filter, $scope, $timeout) {
       this.$http = $http;
       this.$scope = $scope;
       this.awesomeThings = [];
@@ -13,15 +13,28 @@
       this.$location = $location;
       this.$filter = $filter;
       this.reverse = true;
+      this.$timeout = $timeout;
       /* this.costAmount = 0;
       this.incomeChfAmount = 0;
       this.incomeEthAmount = 0; */
+      var self = this;
       this.gridOptions = {
-
+        
         showColumnFooter: true,
         enableFiltering: true,
         enableSorting: true,
-
+              onRegisterApi: function (gridApi) {
+                self.gridApi = gridApi;
+                // this.gridApi.grid.columns[7].getAggregationValue();
+                console.log('gridApi: ', self.gridApi.grid.columns);
+                var colTotals = [];
+                self.gridApi.grid.columns.forEach(element => {
+                  console.log('agg triggered');
+                  //colTotals.push({element.name : element.aggregationValue});
+                });
+                
+              },
+        
         columnDefs: [{
           name: 'Edit',
           field: 'actions',
@@ -163,24 +176,14 @@
           aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,
           footerCellTemplate: '<div class="ui-grid-cell-contents" >{{col.getAggregationValue() | number:2 }}</div>'
         }
-        ],
-
-        onRegisterApi: function (gridApi) {
-          this.gridApi = gridApi;
-          console.log('gridApi: ', this.gridApi.grid.columns);
-          var colTotals = [];
-          this.gridApi.grid.columns.forEach(element => {
-            console.log('agg triggered');
-            //colTotals.push({element.name : element.aggregationValue});
-          });
-
-        },
-      }; // End UI Grid Options
-
-    } // end constructor
-
-    $onInit() {
-
+      ],
+      
+    }; // End UI Grid Options
+    
+  } // end constructor
+  
+  $onInit() {
+    
       this.$http.get('/api/statements')
         .then(response => {
           this.buchungen = response.data;
@@ -281,7 +284,16 @@
 
           this.gridOptions.data = jahr2028Januar;
 
-          // this.gridOptions.onRegisterApi();
+          var self = this;
+          this.$timeout( function(){
+            var colSums = [];
+            var gridcolumns = self.gridApi.grid.columns;
+            gridcolumns.forEach(element => {
+              colSums.push({colName: element.name, colSum: element.aggregationValue });
+            });
+            console.log('aggregated values: ', colSums);
+        }, 3000 );
+
 
           /* this.gridOptions.data = [{
             jahr: "2018",

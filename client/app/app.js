@@ -25,6 +25,24 @@ angular.module('angularFullstackApp', ['angularFullstackApp.auth', 'angularFulls
     };
   })
 
+/*   // https://daveceddia.com/sharing-data-between-controllers-best-practice-use-a-service/
+  .factory('sharedList', function() {
+    var list = [];
+  
+    return {
+      addItem: addItem,
+      getList: getList
+    };
+  
+    function addItem(item) {
+      list.push(item);
+    }
+  
+    function getList() {
+      return list;
+    }
+  }) */
+
   .filter('groupBy', ['pmkr.filterStabilize', function (stabilize) {
     return stabilize(function (data, key) {
       if (!(data && key)) return;
