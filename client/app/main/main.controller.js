@@ -1,9 +1,9 @@
 'use strict';
 
 (function () {
-
+  
   class MainController {
-
+    
     constructor($http, StatementService, uiGridConstants, $location, $filter, $scope, $timeout) {
       this.$http = $http;
       this.$scope = $scope;
@@ -18,23 +18,18 @@
       this.incomeChfAmount = 0;
       this.incomeEthAmount = 0; */
       var self = this;
+      this.colSums = [];
       this.gridOptions = {
-        
+
         showColumnFooter: true,
         enableFiltering: true,
         enableSorting: true,
-              onRegisterApi: function (gridApi) {
-                self.gridApi = gridApi;
-                // this.gridApi.grid.columns[7].getAggregationValue();
-                console.log('gridApi: ', self.gridApi.grid.columns);
-                var colTotals = [];
-                self.gridApi.grid.columns.forEach(element => {
-                  console.log('agg triggered');
-                  //colTotals.push({element.name : element.aggregationValue});
-                });
-                
-              },
-        
+        onRegisterApi: function (gridApi) {
+          self.gridApi = gridApi;
+          // this.gridApi.grid.columns[7].getAggregationValue();
+          console.log('gridApi: ', self.gridApi.grid.columns);
+        },
+
         columnDefs: [{
           name: 'Edit',
           field: 'actions',
@@ -176,14 +171,14 @@
           aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,
           footerCellTemplate: '<div class="ui-grid-cell-contents" >{{col.getAggregationValue() | number:2 }}</div>'
         }
-      ],
-      
-    }; // End UI Grid Options
-    
-  } // end constructor
-  
-  $onInit() {
-    
+        ],
+
+      }; // End UI Grid Options
+
+    } // end constructor
+
+    $onInit() {
+
       this.$http.get('/api/statements')
         .then(response => {
           this.buchungen = response.data;
@@ -284,47 +279,52 @@
 
           this.gridOptions.data = jahr2028Januar;
 
-          var self = this;
-          this.$timeout( function(){
-            var colSums = [];
-            var gridcolumns = self.gridApi.grid.columns;
-            gridcolumns.forEach(element => {
-              colSums.push({colName: element.name, colSum: element.aggregationValue });
-            });
-            console.log('aggregated values: ', colSums);
-        }, 3000 );
+        }); // end $http.get
 
 
-          /* this.gridOptions.data = [{
-            jahr: "2018",
-            monat: "Januar",
-            tag: "11.",
-            amountEth: 1.1,
-            rate: 600,
-            amount: 660, // naturalbezug
-            /*einnahmen: null,
-            material: 40,
-            lohn: 200,
-            hardware: null,
-            software: null,
-            mietePutzenEWZ: null,
-            bueroTelefon: null,
-            transport: null,
-            werbung: null,
-            ahv: null,
-            versicherung: null,
-            repSpesen: null,
-            weiterBildung: null,
-            diverses: null
-          }]; 
-          */
+      /* this.gridOptions.data = [{
+        jahr: "2018",
+        monat: "Januar",
+        tag: "11.",
+        amountEth: 1.1,
+        rate: 600,
+        amount: 660, // naturalbezug
+        /*einnahmen: null,
+        material: 40,
+        lohn: 200,
+        hardware: null,
+        software: null,
+        mietePutzenEWZ: null,
+        bueroTelefon: null,
+        transport: null,
+        werbung: null,
+        ahv: null,
+        versicherung: null,
+        repSpesen: null,
+        weiterBildung: null,
+        diverses: null
+      }]; 
+      */
 
-          /* this.$http.get('/api/things')
-          .then(response => {
-            this.awesomeThings = response.data;
-           }); */
+      /* this.$http.get('/api/things')
+      .then(response => {
+        this.awesomeThings = response.data;
+       }); */
+      var self = this;
+      this.$timeout(function () {
+        var gridcolumns = self.gridApi.grid.columns;
+        gridcolumns.forEach(element => {
+          self.colSums.push({ colName: element.name, colSum: element.aggregationValue });
         });
-    };
+      }, 3000);
+      
+      // dies ist das aggregierte ergebnis vom Januar, das in der Übersicht der entsprechenden
+      // Zeile entspricht. Somit kann ein neuer array gebildet werden, mit jedem Monat als Obj.
+      this.$timeout(function () {
+        console.log('aggregated values: ', self.colSums);
+    }, 4000);
+
+    } // end $onInit
 
     // to edit
     passItem(statementItem) {

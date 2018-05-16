@@ -2,10 +2,9 @@
 
 <uib-tabset active="active" justified="true">
     <uib-tab index="0" heading="Übersicht" ui-sref="main">
-        <h4>Übersicht</h4>
+        <div>Total for the first column is: {{$ctrl.gridApi.grid.columns[7].getAggregationValue() }}</div>
     </uib-tab>
     <uib-tab index="1" heading="Januar" active='true'>
-        <h4>Januar</h4>
         <div id="grid0" ui-grid="$ctrl.gridOptions" class="myGrid"></div>
     </uib-tab>
     <uib-tab index="2" heading="Februar">
@@ -42,4 +41,3 @@
         <h4>Dezember</h4>
     </uib-tab>
 </uib-tabset>
-<div>Total for the first column is: {{$ctrl.gridApi.grid.columns[7].getAggregationValue() }}</div>
