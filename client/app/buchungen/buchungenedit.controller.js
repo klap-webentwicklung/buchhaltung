@@ -31,7 +31,9 @@
       this.providerOptions = [
         'ABS',
         'ABS AG',
-        'Ethereum Network'
+        'Ethereum Network',
+        'Visa',
+        'PayPal'
       ];
       this.incomeTypeOptions = [
         /* 'Webentwicklung',
@@ -39,7 +41,8 @@
         'Mineing',
         'Diverse Erträge' */
         'Einnahmen',
-        'Naturalbezüge'
+        'Naturalbezüge',
+        'AirBnb'
       ];
       console.log('Income Type Options: ', this.incomeTypeOptions);
 
@@ -61,7 +64,7 @@
             this.newStatementitem.date = new Date(this.newStatementitem.date);
             // console.log('Statement Item Data Date: ', this.newStatementitem.date);
             // ETH positions cant be edited and should not as original amount gets overwritten with fasle value
-            if (this.newStatementitem.currency === 'ETH') {
+            if (this.newStatementitem.currency === 'ETH' || this.newStatementitem.currency === 'EUR') {
               // calc not correct but cant be saved
               this.newStatementitem.amount = this.newStatementitem.amount / this.newStatementitem.rate;
                // this.newStatementitem.amount = this.$filter('number')((this.newStatementitem.amount / this.newStatementitem.rate),8);
@@ -88,6 +91,14 @@
       if (this.newStatementitem.currency === 'ETH') {
         this.newStatementitem.amountEth = this.newStatementitem.amount;
         console.log('this.newStatementitem.amountEth:', this.newStatementitem.amountEth);
+        // this.newStatementitem.amount = Number(this.newStatementitem.amount * this.newStatementitem.rate);
+        // this.newStatementitem.amount = this.$filter('number')((this.newStatementitem.amount), '2');
+        // console.log('this.newStatementitem.amount:', this.newStatementitem.amount);
+      }
+
+      if (this.newStatementitem.currency === 'EUR') {
+        this.newStatementitem.amountEur = this.newStatementitem.amount;
+        console.log('this.newStatementitem.amountEur:', this.newStatementitem.amountEur);
         this.newStatementitem.amount = Number(this.newStatementitem.amount * this.newStatementitem.rate);
         // this.newStatementitem.amount = this.$filter('number')((this.newStatementitem.amount), '2');
         console.log('this.newStatementitem.amount:', this.newStatementitem.amount);
@@ -103,12 +114,14 @@
               amount: this.newStatementitem.amount,
               rate: this.newStatementitem.rate,
               amountEth: this.newStatementitem.amountEth,
+              amountEur: this.newStatementitem.amountEur,
               costType: this.newStatementitem.costType,
               incomeType: this.newStatementitem.incomeType,
               processed: this.newStatementitem.processed,
               neutralTrans: this.newStatementitem.neutralTrans,
               comment: this.newStatementitem.comment,
-              currency: this.newStatementitem.currency
+              currency: this.newStatementitem.currency,
+              refId: this.newStatementitem.refId
           };
       if (this.statementItemParams && this.statementItemParams.length > 0) {
 

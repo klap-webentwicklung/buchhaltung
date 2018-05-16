@@ -1,8 +1,10 @@
-<uib-tabset active="activeJustified" justified="true">
-    <uib-tab index="0" heading="Übersicht">
+<button class="btn btn-large" ng-click="active = 10">Select Tab 10</button>
+
+<uib-tabset active="active" justified="true">
+    <uib-tab index="0" heading="Übersicht" ui-sref="main">
         <h4>Übersicht</h4>
     </uib-tab>
-    <uib-tab index="1" heading="Januar" active="true">
+    <uib-tab index="1" heading="Januar" active='true'>
         <h4>Januar</h4>
         <div id="grid0" ui-grid="$ctrl.gridOptions" class="myGrid"></div>
     </uib-tab>

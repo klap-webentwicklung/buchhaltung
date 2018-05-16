@@ -10,9 +10,9 @@ var StatementSchema = new mongoose.Schema({
   date: Date, 
   infotext: String,
   amount: Number,
-  // amountEur: Number,
   // end import fields
   amountEth: Number,
+  amountEur: Number,
   currency: { type: String,
               default: 'CHF'
   },
@@ -31,7 +31,8 @@ var StatementSchema = new mongoose.Schema({
   comment: String,
   belegsArt: { type: String,
               default: 'Digital'
-              }
+              },
+  refId: String
 
 });
 
