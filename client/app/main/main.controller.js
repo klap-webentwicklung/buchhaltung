@@ -14,9 +14,26 @@
       this.$filter = $filter;
       this.reverse = true;
       this.$timeout = $timeout;
-      /* this.costAmount = 0;
-      this.incomeChfAmount = 0;
-      this.incomeEthAmount = 0; */
+      this.foo = 'foo';
+      // sample array for overview table
+      this.overviewItems = [
+        {
+          month: 'january',
+          items: {
+            einnahmen: 500,
+            lohn: -300,
+            software: -200
+          }
+        },
+        {
+          month: 'february',
+          items: {
+            einnahmen: 600,
+            lohn: -300,
+            software: -250
+          }
+        }
+      ];
       var self = this;
       this.colSums = [];
       this.gridOptions = {
@@ -184,14 +201,6 @@
           this.buchungen = response.data;
           // console.log('this.buchungen:', this.buchungen);
 
-          /* this.buchungen.forEach(element => {
-            
-            if(element.processed === true) {
-              console.log('buchung processed true', element);
-                
-            }
-          }); */
-
           // groop buchungen by "jahr"
           var buchungenJahrOrdered = this.$filter('orderBy')(this.buchungen, "jahr", this.reverse);
           // console.log('buchungen Jahr ordered:', buchungenJahrOrdered);
@@ -281,63 +290,41 @@
 
         }); // end $http.get
 
-
-      /* this.gridOptions.data = [{
-        jahr: "2018",
-        monat: "Januar",
-        tag: "11.",
-        amountEth: 1.1,
-        rate: 600,
-        amount: 660, // naturalbezug
-        /*einnahmen: null,
-        material: 40,
-        lohn: 200,
-        hardware: null,
-        software: null,
-        mietePutzenEWZ: null,
-        bueroTelefon: null,
-        transport: null,
-        werbung: null,
-        ahv: null,
-        versicherung: null,
-        repSpesen: null,
-        weiterBildung: null,
-        diverses: null
-      }]; 
-      */
-
-      /* this.$http.get('/api/things')
+        
+        var self = this;
+        this.$timeout(function () {
+          var gridcolumns = self.gridApi.grid.columns;
+          gridcolumns.forEach(element => {
+            self.colSums.push({ colName: element.name, colSum: element.aggregationValue });
+          });
+        }, 3000);
+        
+        // dies ist das aggregierte ergebnis vom Januar, das in der Übersicht der entsprechenden
+        // Zeile entspricht. Somit kann ein neuer array gebildet werden, mit jedem Monat als Obj.
+        this.$timeout(function () {
+          console.log('aggregated values: ', self.colSums);
+        }, 4000);
+        
+      } // end $onInit
+      
+      // to edit
+      passItem(statementItem) {
+        this.$location.path('/buchungenedit/' + statementItem._id);
+        // this.$state.go('mitgliededit', {memberId: member._id});
+      }
+      
+      setActiveTab(index) {
+        console.log('active Tab triggered');
+        this.activeTab = index;
+      }
+      
+      /* CRUD Example
+      this.$http.get('/api/things')
       .then(response => {
         this.awesomeThings = response.data;
-       }); */
-      var self = this;
-      this.$timeout(function () {
-        var gridcolumns = self.gridApi.grid.columns;
-        gridcolumns.forEach(element => {
-          self.colSums.push({ colName: element.name, colSum: element.aggregationValue });
-        });
-      }, 3000);
-      
-      // dies ist das aggregierte ergebnis vom Januar, das in der Übersicht der entsprechenden
-      // Zeile entspricht. Somit kann ein neuer array gebildet werden, mit jedem Monat als Obj.
-      this.$timeout(function () {
-        console.log('aggregated values: ', self.colSums);
-    }, 4000);
+       });
 
-    } // end $onInit
-
-    // to edit
-    passItem(statementItem) {
-      this.$location.path('/buchungenedit/' + statementItem._id);
-      // this.$state.go('mitgliededit', {memberId: member._id});
-    }
-
-    setActiveTab(index) {
-      console.log('active Tab triggered');
-      this.activeTab = index;
-    }
-
-    /*    addThing() {
+     addThing() {
          if (this.newThing) {
            this.$http.post('/api/things', {
              name: this.newThing
@@ -349,6 +336,7 @@
        deleteThing(thing) {
          this.$http.delete('/api/things/' + thing._id);
    } */
+
   }
 
   angular.module('angularFullstackApp')

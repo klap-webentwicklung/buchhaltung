@@ -3,6 +3,15 @@
 <uib-tabset active="active" justified="true">
     <uib-tab index="0" heading="Übersicht" ui-sref="main">
         <div>Total for the first column is: {{$ctrl.gridApi.grid.columns[7].getAggregationValue() }}</div>
+        <!-- overview table -->
+        <ul ng-repeat="item in $ctrl.overviewItems">
+          <li>{{item.month}}
+            <ul ng-repeat="itemunit in item.items">
+              <li>{{itemunit}}</li>
+            </ul>
+          </li>
+        </ul>
+
     </uib-tab>
     <uib-tab index="1" heading="Januar" active='true'>
         <div id="grid0" ui-grid="$ctrl.gridOptions" class="myGrid"></div>
